@@ -190,30 +190,32 @@ fn sum_corresponding_gears(
 
 #[cfg(test)]
 mod test {
+    use super::*;
+
     fn get_example() -> String {
-        super::read_file("example.txt")
+        read_file("example.txt")
     }
 
     #[test]
-    fn create_map_key() {
-        let key = super::create_map_key(10, 20);
+    fn create_map_key_test() {
+        let key = create_map_key(10, 20);
 
         assert_eq!("10/20", key.as_str());
     }
 
     #[test]
-    fn get_map_key_from_position() {
+    fn get_map_key_from_position_test() {
         let position = (10, 20);
-        let key = super::get_map_key_from_position(position);
+        let key = get_map_key_from_position(position);
 
         assert_eq!("10/20", key.as_str());
     }
 
     #[test]
-    fn build_map() {
+    fn build_map_test() {
         let input = get_example();
 
-        let map = super::build_map(&input);
+        let map = build_map(&input);
 
         assert_eq!('4', map.get("0/0").unwrap().to_owned());
         assert_eq!('*', map.get("3/4").unwrap().to_owned());
@@ -221,13 +223,13 @@ mod test {
     }
 
     #[test]
-    fn filter_map_position_numbers() {
+    fn filter_map_position_numbers_test() {
         let input = get_example();
 
-        let position_numbers: Vec<super::PositionNumber> = input
+        let position_numbers: Vec<PositionNumber> = input
             .lines()
             .enumerate()
-            .filter_map(super::filter_map_position_numbers)
+            .filter_map(filter_map_position_numbers)
             .flatten()
             .collect();
 
@@ -249,16 +251,16 @@ mod test {
     }
 
     #[test]
-    fn filter_position_numbers() {
+    fn filter_position_numbers_test() {
         let input = get_example();
-        let map = super::build_map(&input);
+        let map = build_map(&input);
 
-        let position_numbers: Vec<super::PositionNumber> = input
+        let position_numbers: Vec<PositionNumber> = input
             .lines()
             .enumerate()
-            .filter_map(super::filter_map_position_numbers)
+            .filter_map(filter_map_position_numbers)
             .flatten()
-            .filter(|position_number| super::filter_part_numbers(position_number, &map))
+            .filter(|position_number| filter_part_numbers(position_number, &map))
             .collect();
 
         assert_eq!(
@@ -277,25 +279,25 @@ mod test {
     }
 
     #[test]
-    fn part_one() {
+    fn part_one_test() {
         let input = get_example();
 
-        let result = super::part_one(&input);
+        let result = part_one(&input);
 
         assert_eq!(4361, result)
     }
 
     #[test]
-    fn filter_gear_numbers() {
+    fn filter_gear_numbers_test() {
         let input = get_example();
-        let map = super::build_map(&input);
+        let map = build_map(&input);
 
-        let position_numbers: Vec<super::GearPositionNumber> = input
+        let position_numbers: Vec<GearPositionNumber> = input
             .lines()
             .enumerate()
-            .filter_map(super::filter_map_position_numbers)
+            .filter_map(filter_map_position_numbers)
             .flatten()
-            .filter_map(|position_number| super::filter_map_gear_numbers(&position_number, &map))
+            .filter_map(|position_number| filter_map_gear_numbers(&position_number, &map))
             .collect();
 
         assert_eq!(
@@ -311,17 +313,17 @@ mod test {
     }
 
     #[test]
-    fn compare_gear_symbol_position() {
-        let compare_result = super::compare_gear_symbol_position(&(0, 0), &(0, 0));
+    fn compare_gear_symbol_position_test() {
+        let compare_result = compare_gear_symbol_position(&(0, 0), &(0, 0));
 
         assert_eq!(true, compare_result)
     }
 
     #[test]
-    fn part_two() {
+    fn part_two_test() {
         let input = get_example();
 
-        let result = super::part_two(&input);
+        let result = part_two(&input);
 
         assert_eq!(result, 467835)
     }
