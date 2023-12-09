@@ -59,18 +59,14 @@ fn build_map(input: &str) -> InputMap {
 
     input.lines().enumerate().for_each(|(y_index, line)| {
         line.chars().enumerate().for_each(|(x_index, char)| {
-            map.insert(create_map_key(x_index, y_index), char);
+            map.insert(create_map_key((x_index as i32, y_index as i32)), char);
         })
     });
 
     map
 }
 
-fn create_map_key(x_index: usize, y_index: usize) -> String {
-    format!("{x_index}/{y_index}")
-}
-
-fn get_map_key_from_position(position: Position) -> String {
+fn create_map_key(position: Position) -> String {
     format!("{}/{}", position.0, position.1)
 }
 
@@ -120,7 +116,7 @@ fn filter_part_numbers(position_number: &PositionNumber, map: &InputMap) -> bool
     let search_positions = get_search_positions();
     for position in &position_number.0 {
         for search_position in &search_positions {
-            let key = get_map_key_from_position((
+            let key = create_map_key((
                 position.0 + search_position.0,
                 position.1 + search_position.1,
             ));
@@ -147,7 +143,7 @@ fn filter_map_gear_numbers(
                 position.0 + search_position.0,
                 position.1 + search_position.1,
             );
-            let key = get_map_key_from_position(symbol_position);
+            let key = create_map_key(symbol_position);
 
             if let Some(key) = map.get(&key) {
                 if key.to_owned() == '*' {
@@ -198,15 +194,7 @@ mod test {
 
     #[test]
     fn create_map_key_test() {
-        let key = create_map_key(10, 20);
-
-        assert_eq!("10/20", key.as_str());
-    }
-
-    #[test]
-    fn get_map_key_from_position_test() {
-        let position = (10, 20);
-        let key = get_map_key_from_position(position);
+        let key = create_map_key((10, 20));
 
         assert_eq!("10/20", key.as_str());
     }
