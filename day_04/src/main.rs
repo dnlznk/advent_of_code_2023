@@ -21,13 +21,10 @@ fn get_numbers_from_input(input: &str) -> Vec<ScratchCard> {
     input
         .lines()
         .map(|line| {
-            let numbers = line.split_once(": ").unwrap().1;
-            let (winning_numbers, numbers) = numbers.split_once(" | ").unwrap();
+            let (winning_numbers, numbers) =
+                line.split_once(": ").unwrap().1.split_once(" | ").unwrap();
 
-            let winning_numbers = split_numbers(&winning_numbers);
-            let numbers = split_numbers(&numbers);
-
-            (winning_numbers, numbers)
+            (split_numbers(winning_numbers), split_numbers(numbers))
         })
         .collect()
 }
@@ -44,12 +41,21 @@ fn get_result(cards: Vec<ScratchCard>) -> u32 {
     cards
         .iter()
         .map(|card| {
-            let winning_numbers = card.1.iter().filter(|number| card.0.contains(number)).count();
-            let mut result = if winning_numbers > 0 { 1 } else { 0 };
-            for _ in 1..winning_numbers {
-                result *= 2 
+            let winning_numbers = card
+                .1
+                .iter()
+                .filter(|number| card.0.contains(number))
+                .count();
+
+            if winning_numbers == 0 {
+                return 0;
             }
-            result as u32
+
+            let mut result = 1;
+            for _ in 1..winning_numbers {
+                result *= 2
+            }
+            result
         })
         .sum()
 }
@@ -100,10 +106,9 @@ mod test {
     }
 
     #[test]
-    fn get_result_test() {
+    fn part_one_test() {
         let input = get_example();
-        let numbers = get_numbers_from_input(&input);
-        let result = get_result(numbers);
+        let result = part_one(&input);
 
         assert_eq!(13, result)
     }
