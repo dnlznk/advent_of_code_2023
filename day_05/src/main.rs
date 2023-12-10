@@ -7,16 +7,33 @@ fn main() {
     println!("Part two: {part_two_result}");
 }
 
+type Id = u32;
+type Ids = Vec<Id>;
+
 fn read_file(path: &str) -> String {
     std::fs::read_to_string(path).expect("Error reading file")
 }
 
-fn part_one(_input: &str) -> u32 {
+fn part_one(input: &str) -> u32 {
+    let _seeds = get_seeds(input);
     0
 }
 
 fn part_two(_input: &str) -> u32 {
     0
+}
+
+fn get_seeds(input: &str) -> Ids {
+    input
+        .lines()
+        .next()
+        .map(|line| line.replace("seeds: ", ""))
+        .map(|line| {
+            line.split(" ")
+                .map(|number| number.parse().unwrap())
+                .collect::<Ids>()
+        })
+        .unwrap()
 }
 
 #[cfg(test)]
@@ -41,5 +58,13 @@ mod test {
         let result = part_two(&input);
 
         assert!(result > 0)
+    }
+
+    #[test]
+    fn get_seeds_test() {
+        let input = get_example_file();
+        let result = get_seeds(&input);
+
+        assert_eq!(vec![79, 14, 55, 13], result)
     }
 }
