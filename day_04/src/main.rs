@@ -77,7 +77,7 @@ fn split_into_numbers(numbers: &str) -> Numbers {
 }
 
 fn get_card_instance_map(card_results: Vec<ScratchcardResult>) -> ScratchcardInstancesMap {
-    let mut map: ScratchcardInstancesMap = std::collections::HashMap::new();
+    let mut map = ScratchcardInstancesMap::new();
 
     card_results.iter().enumerate().for_each(|(index, card)| {
         let mut card_amount = 1;
